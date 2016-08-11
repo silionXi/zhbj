@@ -2,11 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/yellow"
               android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.silion.zhbj.view.NoScrollViewPager
+        android:id="@+id/vpContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <RadioGroup
+        android:id="@+id/rgTab"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="main"/>
+        android:background="@color/gray"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <RadioButton
+            android:id="@+id/rbHome"
+            style="@style/BottomTabStyle"
+            android:drawableTop="@drawable/main_home_icon_selector"
+            android:text="首页"/>
+
+        <RadioButton
+            android:id="@+id/rbNewsCenter"
+            style="@style/BottomTabStyle"
+            android:drawableTop="@drawable/main_newscenter_icon_selector"
+            android:text="新闻中心"/>
+
+        <RadioButton
+            android:id="@+id/rbSmartService"
+            style="@style/BottomTabStyle"
+            android:drawableTop="@drawable/main_smartservice_icon_selector"
+            android:text="智慧服务"/>
+
+        <RadioButton
+            android:id="@+id/rbGovAffairs"
+            style="@style/BottomTabStyle"
+            android:drawableTop="@drawable/main_govaffairs_icon_selector"
+            android:text="政务"/>
+
+        <RadioButton
+            android:id="@+id/rbSetting"
+            style="@style/BottomTabStyle"
+            android:drawableTop="@drawable/main_setting_icon_selector"
+            android:text="设置"/>
+    </RadioGroup>
 </LinearLayout>

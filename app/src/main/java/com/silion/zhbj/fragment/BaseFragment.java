@@ -13,6 +13,7 @@ public abstract class BaseFragment extends Fragment {
 
     /**
      * Add in API level 23
+     *
      * @param context
      */
     @Override
@@ -24,6 +25,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        mActivity = activity;
     }
 
     @Override

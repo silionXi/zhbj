@@ -5,7 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Display;
-import android.view.WindowManager;
+import android.view.View;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.silion.zhbj.R;
@@ -18,21 +18,22 @@ import com.silion.zhbj.fragment.MainLeftMenuFragment;
 public class MainActivity extends Activity {
 
     private FragmentManager mFragmentManager;
+    private SlidingMenu mSlidingMenu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("智慧北京");
         setContentView(R.layout.activity_main);
-        SlidingMenu menu = new SlidingMenu(this);
-        menu.setMode(SlidingMenu.LEFT);
-        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        mSlidingMenu = new SlidingMenu(this);
+        mSlidingMenu.setMode(SlidingMenu.LEFT);
+        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         Display display = getWindowManager().getDefaultDisplay();
-        menu.setBehindOffset(display.getWidth() * 2 / 3);
-        menu.setTouchModeBehind(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        menu.setFadeDegree(0.35f);
-        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        menu.setMenu(R.layout.slidingmenu_main);
+        mSlidingMenu.setBehindOffset(display.getWidth() * 2 / 3);
+        mSlidingMenu.setTouchModeBehind(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        mSlidingMenu.setFadeDegree(0.35f);
+        mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        mSlidingMenu.setMenu(R.layout.slidingmenu_main);
 
         initFragment();
     }
@@ -43,5 +44,9 @@ public class MainActivity extends Activity {
         fragmentTransaction.add(R.id.container, new MainFragment(), MainFragment.class.getSimpleName());
         fragmentTransaction.add(R.id.menuContainer, new MainLeftMenuFragment(), MainLeftMenuFragment.class.getSimpleName());
         fragmentTransaction.commit();
+    }
+
+    public SlidingMenu getSlidingMenu() {
+        return mSlidingMenu;
     }
 }
