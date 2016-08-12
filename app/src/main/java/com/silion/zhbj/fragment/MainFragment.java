@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
-import com.silion.zhbj.BasePager;
-import com.silion.zhbj.GovaffairsPager;
-import com.silion.zhbj.HomePager;
-import com.silion.zhbj.NewsCenterPager;
+import com.silion.zhbj.pager.BasePager;
+import com.silion.zhbj.pager.GovaffairsPager;
+import com.silion.zhbj.pager.HomePager;
+import com.silion.zhbj.pager.NewsCenterPager;
 import com.silion.zhbj.R;
-import com.silion.zhbj.SettingPager;
-import com.silion.zhbj.SmartservicePager;
+import com.silion.zhbj.pager.SettingPager;
+import com.silion.zhbj.pager.SmartservicePager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.List;
 public class MainFragment extends BaseFragment {
     private ViewPager vpContent;
     private ViewPagerAdapter mAdapter;
-    private List<BasePager> mData = new ArrayList<>();
+    private List<BasePager> mPagerList = new ArrayList<>();
     private RadioGroup rgTab;
 
     @Override
@@ -43,7 +43,7 @@ public class MainFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                mData.get(position).initView();
+                mPagerList.get(position).initView();
             }
 
             @Override
@@ -51,7 +51,7 @@ public class MainFragment extends BaseFragment {
 
             }
         });
-        mData.get(0).initView();
+        mPagerList.get(0).initView();
 
         rgTab = (RadioGroup) view.findViewById(R.id.rgTab);
         rgTab.check(R.id.rbHome);
@@ -83,18 +83,22 @@ public class MainFragment extends BaseFragment {
     }
 
     private void addPagers() {
-        mData.add(new HomePager(mActivity));
-        mData.add(new NewsCenterPager(mActivity));
-        mData.add(new SmartservicePager(mActivity));
-        mData.add(new GovaffairsPager(mActivity));
-        mData.add(new SettingPager(mActivity));
+        mPagerList.add(new HomePager(mActivity));
+        mPagerList.add(new NewsCenterPager(mActivity));
+        mPagerList.add(new SmartservicePager(mActivity));
+        mPagerList.add(new GovaffairsPager(mActivity));
+        mPagerList.add(new SettingPager(mActivity));
+    }
+
+    public BasePager getPager(int location) {
+        return mPagerList.get(location);
     }
 
     protected class ViewPagerAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
-            return mData.size();
+            return mPagerList.size();
         }
 
         @Override
@@ -104,7 +108,7 @@ public class MainFragment extends BaseFragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view = mData.get(position).mView;
+            View view = mPagerList.get(position).mView;
             container.addView(view);
             return view;
         }

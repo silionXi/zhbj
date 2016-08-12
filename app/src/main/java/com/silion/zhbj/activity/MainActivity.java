@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.silion.zhbj.R;
+import com.silion.zhbj.fragment.BaseFragment;
 import com.silion.zhbj.fragment.MainFragment;
 import com.silion.zhbj.fragment.MainLeftMenuFragment;
 
@@ -30,7 +31,6 @@ public class MainActivity extends Activity {
         mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         Display display = getWindowManager().getDefaultDisplay();
         mSlidingMenu.setBehindOffset(display.getWidth() * 2 / 3);
-        mSlidingMenu.setTouchModeBehind(SlidingMenu.TOUCHMODE_FULLSCREEN);
         mSlidingMenu.setFadeDegree(0.35f);
         mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         mSlidingMenu.setMenu(R.layout.slidingmenu_main);
@@ -48,5 +48,9 @@ public class MainActivity extends Activity {
 
     public SlidingMenu getSlidingMenu() {
         return mSlidingMenu;
+    }
+
+    public BaseFragment getFragment(String tag) {
+        return (BaseFragment) mFragmentManager.findFragmentByTag(tag);
     }
 }

@@ -1,11 +1,13 @@
-package com.silion.zhbj;
+package com.silion.zhbj.pager;
 
 import android.app.Activity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.silion.zhbj.R;
 import com.silion.zhbj.activity.MainActivity;
 
 /**
@@ -16,13 +18,13 @@ public abstract class BasePager {
     public View mView;
     public final ImageButton ibMenu;
     public final TextView tvTitle;
-    public final TextView tvContent;
+    public final FrameLayout flContent;
 
     public BasePager(Activity activity) {
         mActivity = activity;
         mView = View.inflate(activity, R.layout.viewpager_main_base, null);
         tvTitle = (TextView) mView.findViewById(R.id.tvTitle);
-        tvContent = (TextView) mView.findViewById(R.id.tvContent);
+        flContent = (FrameLayout) mView.findViewById(R.id.flContent);
         ibMenu = (ImageButton) mView.findViewById(R.id.ibMenu);
         ibMenu.setOnClickListener(new View.OnClickListener() {
             @Override
