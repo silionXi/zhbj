@@ -1,5 +1,6 @@
 package com.silion.zhbj.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  */
 public class NewsData {
     public int retcode;
-    public List<NewsMenuData> data;
+    public ArrayList<NewsMenuData> data;
 
     @Override
     public String toString() {
@@ -30,7 +31,7 @@ public class NewsData {
                     '}';
         }
 
-        public List<NewsTabData> children;
+        public ArrayList<NewsTabData> children;
     }
 
     public class NewsTabData {

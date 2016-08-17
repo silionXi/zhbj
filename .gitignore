@@ -12,3 +12,6 @@ bash.exe.stackdump
 gradlew
 gradlew.bat
 .git.zip
+/library/build
+/indicatorlibrary/build
+/sample/build

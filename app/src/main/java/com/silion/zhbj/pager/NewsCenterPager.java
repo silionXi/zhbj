@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.google.gson.Gson;
 import com.silion.zhbj.activity.MainActivity;
 import com.silion.zhbj.domain.NewsData;
+import com.silion.zhbj.domain.NewsData.NewsTabData;
 import com.silion.zhbj.fragment.MainLeftMenuFragment;
 import com.silion.zhbj.global.GlobalContants;
 
@@ -30,8 +31,6 @@ public class NewsCenterPager extends BasePager {
     @Override
     public void initView() {
         setSlidingMenuEnable(true);
-        tvTitle.setText("新闻");
-
         getDataFramServer();
     }
 
@@ -45,7 +44,11 @@ public class NewsCenterPager extends BasePager {
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                parseData(DEFAULT_NEWSDATA);
+                try {
+                    parseData(DEFAULT_NEWSDATA);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -66,8 +69,9 @@ public class NewsCenterPager extends BasePager {
 
         MainLeftMenuFragment fragment = (MainLeftMenuFragment) ((MainActivity) mActivity).getFragment(MainLeftMenuFragment.class.getSimpleName());
         fragment.setNewsMenuData(mNewsData.data);
+
         mPagers = new ArrayList<>();
-        mPagers.add(new NewsMenuDetailPager(mActivity));
+        mPagers.add(new NewsMenuDetailPager(mActivity, mNewsData.data.get(0).children));
         mPagers.add(new TopicMenuDetailPager(mActivity));
         mPagers.add(new PhotoMenuDetaiPager(mActivity));
         mPagers.add(new InteractMenuDetailPager(mActivity));
@@ -77,6 +81,7 @@ public class NewsCenterPager extends BasePager {
 
     public void setMenuDetailPager(int location) {
         BaseMenuDetailPager pager = mPagers.get(location);
+        pager.initData();
 
         flContent.removeAllViews();
         flContent.addView(pager.mRootView);
