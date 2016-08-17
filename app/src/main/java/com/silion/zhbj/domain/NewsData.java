@@ -42,7 +42,7 @@ public class NewsData {
 
         @Override
         public String toString() {
-            return "NewsTabData{" +
+            return "TabData{" +
                     "title='" + title + '\'' +
                     '}';
         }

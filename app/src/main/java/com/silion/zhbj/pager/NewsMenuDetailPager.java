@@ -10,19 +10,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.silion.zhbj.R;
+import com.silion.zhbj.activity.MainActivity;
 import com.silion.zhbj.domain.NewsData.NewsTabData;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by silion on 2016/8/12.
  */
-public class NewsMenuDetailPager extends BaseMenuDetailPager {
+public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPager.OnPageChangeListener {
     private ArrayList<NewsTabData> mNewsTabDatas;
     private ViewPager vpNewsMenuDetail;
     private NewsTabPagerAdapter mPagerAdapter;
     private TabPageIndicator mIndicator;
+    private List<TapDetailPager> mTapDetailPagers;
 
     public NewsMenuDetailPager(Activity activity, ArrayList<NewsTabData> datas) {
         super(activity);
@@ -34,23 +37,43 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
         View view = View.inflate(mActivity, R.layout.viewpager_news_menudetail, null);
 
         vpNewsMenuDetail = (ViewPager) view.findViewById(R.id.vpNewsMenuDetail);
-//        mPagerAdapter = new NewsTabPagerAdapter();
-//        vpNewsMenuDetail.setAdapter(mPagerAdapter);
+        mPagerAdapter = new NewsTabPagerAdapter();
+        vpNewsMenuDetail.setAdapter(mPagerAdapter);
 //
         mIndicator = (TabPageIndicator) view.findViewById(R.id.indicator);
-//        mIndicator.setViewPager(vpNewsMenuDetail);
+        mIndicator.setViewPager(vpNewsMenuDetail);
+        vpNewsMenuDetail.addOnPageChangeListener(this);
         return view;
     }
 
     @Override
     public void initData() {
         super.initData();
-//        mPagerAdapter.notifyDataSetChanged();
-//        mIndicator.notifyDataSetChanged();
-        mPagerAdapter = new NewsTabPagerAdapter();
-        vpNewsMenuDetail.setAdapter(mPagerAdapter);
+        mTapDetailPagers = new ArrayList<>();
+        for (NewsTabData newsTabData : mNewsTabDatas) {
+            mTapDetailPagers.add(new TapDetailPager(mActivity, newsTabData));
+        }
+        mPagerAdapter.notifyDataSetChanged();
+        mIndicator.notifyDataSetChanged();
+    }
 
-        mIndicator.setViewPager(vpNewsMenuDetail);
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        if (position == 0) {
+            ((MainActivity) mActivity).setSlidingMenuEnable(true);
+        } else {
+            ((MainActivity) mActivity).setSlidingMenuEnable(false);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
     class NewsTabPagerAdapter extends PagerAdapter {
@@ -75,14 +98,10 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            String title = mNewsTabDatas.get(position).title;
-            TextView text = new TextView(mActivity);
-            text.setText(title);
-            text.setTextColor(Color.RED);
-            text.setTextSize(25);
-            text.setGravity(Gravity.CENTER);
-            container.addView(text);
-            return text;
+            TapDetailPager tapDetailPager = mTapDetailPagers.get(position);
+            container.addView(tapDetailPager.mView);
+            tapDetailPager.initData();
+            return tapDetailPager.mView;
         }
 
         @Override

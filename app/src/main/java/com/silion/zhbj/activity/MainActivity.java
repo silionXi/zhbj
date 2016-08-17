@@ -53,4 +53,12 @@ public class MainActivity extends Activity {
     public BaseFragment getFragment(String tag) {
         return (BaseFragment) mFragmentManager.findFragmentByTag(tag);
     }
+
+    public void setSlidingMenuEnable(boolean enable) {
+        if (enable) {
+            mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        } else {
+            mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        }
+    }
 }
