@@ -2,6 +2,7 @@ package com.silion.zhbj.pager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.support.v4.view.PagerAdapter;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.silion.zhbj.R;
+import com.silion.zhbj.activity.NewsDetailActivity;
 import com.silion.zhbj.domain.NewsData.NewsTabData;
 import com.silion.zhbj.domain.TabData;
 import com.silion.zhbj.global.GlobalContants;
@@ -120,6 +122,9 @@ public class TapDetailPager {
                     TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
                     tvTitle.setTextColor(mActivity.getResources().getColor(R.color.gray));
                 }
+                Intent intent = new Intent(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", "https://github.com/silionXi");
+                mActivity.startActivity(intent);
             }
         });
     }
