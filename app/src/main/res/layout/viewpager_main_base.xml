@@ -30,6 +30,14 @@
             android:textColor="@color/white"
             android:textSize="32sp"
             tools:text="Base"/>
+
+        <ImageButton
+            android:id="@+id/ibViewType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/photo_menudetail_list_icon"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <FrameLayout

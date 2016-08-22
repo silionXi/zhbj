@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,6 +26,7 @@ import com.silion.zhbj.activity.NewsDetailActivity;
 import com.silion.zhbj.domain.NewsData.NewsTabData;
 import com.silion.zhbj.domain.TabData;
 import com.silion.zhbj.global.GlobalContants;
+import com.silion.zhbj.utils.CacheUtils;
 import com.silion.zhbj.view.RefreshListView;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -56,6 +60,8 @@ public class TapDetailPager {
     private final String mUrl;
     private String mMoreUrl;
     private SharedPreferences mSharedPref;
+    private Handler mHandler;
+    private int mSelectPager = 0;
 
     public TapDetailPager(Activity activity, NewsTabData newsTabData) {
         mActivity = activity;
@@ -131,10 +137,14 @@ public class TapDetailPager {
 
     public void initData() {
         mSharedPref = mActivity.getSharedPreferences("news", Context.MODE_PRIVATE);
+        String cache = CacheUtils.getCache(mActivity, mUrl);
+        if (!TextUtils.isEmpty(cache)) {
+            parseData(cache, false);
+        }
         getDataFromServer(mUrl, false);
     }
 
-    private void getDataFromServer(String url, final boolean isMore) {
+    private void getDataFromServer(final String url, final boolean isMore) {
         final RequestParams params = new RequestParams(url);
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -145,6 +155,7 @@ public class TapDetailPager {
                     mListView.refreshCompelete(true);
                 }
                 parseData(s, isMore);
+                CacheUtils.setCache(mActivity, url, s);
             }
 
             @Override
@@ -157,6 +168,7 @@ public class TapDetailPager {
                     } else {
                         mListView.refreshCompelete(false);
                         parseData(DEFAULT_NEWSTABDATA, isMore);
+                        CacheUtils.setCache(mActivity, url, DEFAULT_NEWSTABDATA);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -191,6 +203,35 @@ public class TapDetailPager {
         mTopNewsDatas.addAll(mTabData.data.topnews);
         mTabNewsDatas.addAll(mTabData.data.news);
         mPagerAdapter.notifyDataSetChanged();
+        if (mHandler == null) {
+            mHandler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    super.handleMessage(msg);
+                    vpTopNews.setCurrentItem((++mSelectPager) % mPagerAdapter.getCount());
+                    sendEmptyMessageDelayed(0, 3000);
+                }
+            };
+        }
+        mHandler.sendEmptyMessageDelayed(0, 3000);
+        vpTopNews.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        mHandler.removeCallbacksAndMessages(null);
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        mHandler.sendEmptyMessageDelayed(0, 3000);
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
         mIndicator.notifyDataSetChanged();
         tvTitle.setText(mTopNewsDatas.get(0).title);
 

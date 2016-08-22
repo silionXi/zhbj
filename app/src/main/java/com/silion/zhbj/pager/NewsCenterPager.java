@@ -1,6 +1,7 @@
 package com.silion.zhbj.pager;
 
 import android.app.Activity;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.silion.zhbj.activity.MainActivity;
@@ -73,7 +74,7 @@ public class NewsCenterPager extends BasePager {
         mPagers = new ArrayList<>();
         mPagers.add(new NewsMenuDetailPager(mActivity, mNewsData.data.get(0).children));
         mPagers.add(new TopicMenuDetailPager(mActivity));
-        mPagers.add(new PhotoMenuDetaiPager(mActivity));
+        mPagers.add(new PhotoMenuDetaiPager(mActivity, GlobalContants.PHOTOS_URL, ibViewType));
         mPagers.add(new InteractMenuDetailPager(mActivity));
 
         setMenuDetailPager(0);
@@ -87,5 +88,11 @@ public class NewsCenterPager extends BasePager {
         flContent.addView(pager.mRootView);
 
         tvTitle.setText(mNewsData.data.get(location).title);
+
+        if (pager instanceof PhotoMenuDetaiPager) {
+            ibViewType.setVisibility(View.VISIBLE);
+        } else {
+            ibViewType.setVisibility(View.GONE);
+        }
     }
 }

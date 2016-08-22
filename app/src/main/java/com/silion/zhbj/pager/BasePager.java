@@ -19,6 +19,7 @@ public abstract class BasePager {
     public final ImageButton ibMenu;
     public final TextView tvTitle;
     public final FrameLayout flContent;
+    public final ImageButton ibViewType;
 
     public BasePager(Activity activity) {
         mActivity = activity;
@@ -32,6 +33,7 @@ public abstract class BasePager {
                 toggleSlidingMenu();
             }
         });
+        ibViewType = (ImageButton) mView.findViewById(R.id.ibViewType);
     }
 
     public void toggleSlidingMenu() {
